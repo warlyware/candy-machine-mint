@@ -1,7 +1,10 @@
 import "./App.css";
 import { useMemo } from "react";
+import { useState } from "react";
+
 
 import Minter from "./Minter";
+import Landing from "./Landing";
 
 import * as anchor from "@project-serum/anchor";
 import { clusterApiUrl } from "@solana/web3.js";
@@ -69,36 +72,47 @@ const theme = createTheme({
 });
 
 const App = () => {
+  const [isMinting, setIsMinting] = useState(false);
+
   const endpoint = useMemo(() => clusterApiUrl(network), []);
 
   const wallets = useMemo(
     () => [
-        getPhantomWallet(),
-        getSlopeWallet(),
-        getSolflareWallet(),
-        getSolletWallet({ network }),
-        getSolletExtensionWallet({ network })
+      getPhantomWallet(),
+      getSlopeWallet(),
+      getSolflareWallet(),
+      getSolletWallet({ network }),
+      getSolletExtensionWallet({ network })
     ],
     []
   );
 
-  return (
-    <ThemeProvider theme={theme}>
-      <ConnectionProvider endpoint={endpoint}>
-        <WalletProvider wallets={wallets} autoConnect={true}>
-          <WalletDialogProvider>
-            <Minter
-              candyMachineId={candyMachineId}
-              config={config}
-              connection={connection}
-              startDate={startDateSeed}
-              treasury={treasury}
-              txTimeout={txTimeout}
+  const MinterComponent = 
+  <ThemeProvider theme={theme}>
+    <ConnectionProvider endpoint={endpoint}>
+      <WalletProvider wallets={wallets} autoConnect={true}>
+        <WalletDialogProvider>
+          <Minter
+            candyMachineId={candyMachineId}
+            config={config}
+            connection={connection}
+            startDate={startDateSeed}
+            treasury={treasury}
+            txTimeout={txTimeout}
             />
-          </WalletDialogProvider>
-        </WalletProvider>
-      </ConnectionProvider>
-    </ThemeProvider>
+        </WalletDialogProvider>
+      </WalletProvider>
+    </ConnectionProvider>
+  </ThemeProvider>
+  
+
+  return (
+    <div>
+      { isMinting ?
+       MinterComponent : 
+       <Landing sanity="asdfasdf" handleToggleMint={setIsMinting} isMinting={isMinting} /> 
+      }
+    </div>
   );
 };
 
