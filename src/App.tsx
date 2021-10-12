@@ -1,7 +1,7 @@
 import "./App.css";
 import { useMemo } from "react";
 import { useState } from "react";
-
+import {Helmet} from "react-helmet";
 
 import Minter from "./Minter";
 import Landing from "./Landing";
@@ -88,6 +88,7 @@ const App = () => {
   );
 
   const MinterComponent = 
+  <div className="flex items-center justify-center min-h-screen text-center leading-loose">
   <ThemeProvider theme={theme}>
     <ConnectionProvider endpoint={endpoint}>
       <WalletProvider wallets={wallets} autoConnect={true}>
@@ -104,13 +105,23 @@ const App = () => {
       </WalletProvider>
     </ConnectionProvider>
   </ThemeProvider>
-  
+  </div>
 
   return (
-    <div>
+    <div className="min-h-screen bg-blue-500">
+      <Helmet>
+        <meta charSet="utf-8" />
+        <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
+        <title>Pixel Plates</title>
+        {/* <link rel="canonical" href="http://mysite.com/example" /> */}
+
+      </Helmet>
       { isMinting ?
        MinterComponent : 
-       <Landing sanity="asdfasdf" handleToggleMint={setIsMinting} isMinting={isMinting} /> 
+       <Landing handleToggleMint={setIsMinting} isMinting={isMinting} /> 
       }
     </div>
   );

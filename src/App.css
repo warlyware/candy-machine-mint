@@ -1,3 +1,7 @@
-.App {
-  text-align: center;
+html, body, .App {
+  min-height: 100vh;
+}
+
+.pixel-font {
+  font-family: 'Press Start 2P', cursive;
 }
